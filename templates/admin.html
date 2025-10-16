@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4 text-center">Admin Dashboard</h2>
+
+<div class="row text-center mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5>Total Members</h5>
+                <h3>{{ stats.total_members }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5>Contributions This Month</h5>
+                <h3>${{ stats.total_amount }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark">
+            <div class="card-body">
+                <h5>Pending Rent Reminders</h5>
+                <h3>{{ stats.pending_reminders }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-end mb-3">
+    <a href="/send_reminders" class="btn btn-outline-danger">Send Rent Reminders</a>
+</div>
+
+<h4>Recent Contributions</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Member</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in contributions %}
+        <tr>
+            <td>{{ c.member_name }}</td>
+            <td>{{ c.type }}</td>
+            <td>${{ c.amount }}</td>
+            <td>{{ c.date.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="text-center mt-4">
+    <a href="/email_logs" class="btn btn-secondary">View Email Logs</a>
+</div>
+{% endblock %}

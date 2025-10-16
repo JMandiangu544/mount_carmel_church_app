@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mount Carmel Church</title>
+
+    <!-- Default Light Theme -->
+    <link id="theme-style" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <style>
+        /* Smooth transitions */
+        * {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Toggle button style */
+        #theme-toggle {
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 30px;
+            color: #0d47a1;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        #theme-toggle:hover {
+            background-color: rgba(13, 71, 161, 0.1);
+        }
+
+        #theme-icon {
+            font-size: 1.3rem;
+            transition: transform 0.4s ease;
+        }
+
+        /* Icon rotation animation */
+        .rotate {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-light px-3">
+        <a class="navbar-brand fw-bold" href="/">Mount Carmel Church</a>
+
+        <button id="theme-toggle" class="ms-auto">
+            <i id="theme-icon" class="fa-solid fa-moon"></i>
+            <span id="theme-text">Dark Mode</span>
+        </button>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container my-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3 mt-5">
+        <small>&copy; 2025 Mount Carmel Church | Built with ❤️ for our community</small>
+    </footer>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const themeLink = document.getElementById('theme-style');
+
+        // Detect system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
+        applyTheme(currentTheme);
+
+        toggleBtn.addEventListener('click', () => {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            applyTheme(currentTheme);
+            localStorage.setItem('theme', currentTheme);
+        });
+
+        function applyTheme(theme) {
+            themeIcon.classList.add('rotate');
+            setTimeout(() => themeIcon.classList.remove('rotate'), 400);
+
+            if (theme === 'dark') {
+                themeLink.href = "{{ url_for('static', filename='style-dark.css') }}";
+                themeIcon.className = 'fa-solid fa-sun';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeLink.href = "{{ url_for('static', filename='style.css') }}";
+                themeIcon.className = 'fa-solid fa-moon';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</body>
+</html>

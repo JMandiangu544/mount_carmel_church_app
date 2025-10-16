@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-center mb-4">Email Logs</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Date Sent</th>
+            <th>Recipient</th>
+            <th>Subject</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.date_sent.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ log.recipient }}</td>
+            <td>{{ log.subject }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="text-center mt-3">
+    <a href="/admin" class="btn btn-outline-primary">Back to Dashboard</a>
+</div>
+{% endblock %}
